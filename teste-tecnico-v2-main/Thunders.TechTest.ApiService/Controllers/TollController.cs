@@ -1,0 +1,53 @@
+﻿using Mapster;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Thunders.TechTest.ApiService.Actions.Toll.CreateToll;
+using Thunders.TechTest.ApiService.Common;
+using Thunders.TechTest.Application.Toll.CreateToll;
+using Thunders.TechTest.OutOfBox.Queues;
+
+namespace Thunders.TechTest.ApiService.Controllers
+{
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    public class TollController : ControllerBase
+    {
+        private readonly IMediator _mediator;
+        private readonly IMessageSender _messageSender;
+
+        public TollController(IMediator mediator, IMessageSender messageSender)
+        {
+            _mediator = mediator;
+            _messageSender = messageSender;
+        }
+
+        [HttpGet]
+        public IActionResult Teste()
+        {
+            _messageSender.SendLocal(new { teste = 1 });
+
+            return Ok();
+        }
+        [HttpPost]
+        [ProducesResponseType(typeof(ApiResponseWithData<CreateTollResponse>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateToll([FromBody] CreateTollRequest request, CancellationToken cancellationToken)
+        {
+            var validator = new CreateTollRequestValidator();
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            var command = request.Adapt<CreateTollCommand>();
+            var response = await _mediator.Send(command, cancellationToken);
+
+            return Created(string.Empty, new ApiResponseWithData<CreateTollResponse>
+            {
+                Success = true,
+                Message = "Toll Transaction created successfully",
+                Data = response.Adapt<CreateTollResponse>()
+            });
+        }
+    }
+}

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+		<ItemGroup>
+				<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		</ItemGroup>
+
+		<ItemGroup>
+		  <ProjectReference Include="..\Thunders.TechTest.Application\Thunders.TechTest.Application.csproj" />
+		  <ProjectReference Include="..\Thunders.TechTest.Domain\Thunders.TechTest.Domain.csproj" />
+		  <ProjectReference Include="..\Thunders.TechTest.OutOfBox\Thunders.TechTest.OutOfBox.csproj" />
+		</ItemGroup>
+
+</Project>
