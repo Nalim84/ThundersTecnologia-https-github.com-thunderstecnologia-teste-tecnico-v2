@@ -15,6 +15,7 @@ public class ReportRepository : IReportRespository
 
     public async Task<Report> CreateReport(Report report, CancellationToken cancellationToken)
     {
+      
         await _context.Reports.AddAsync(report);
         await _context.SaveChangesAsync();
         return report;
