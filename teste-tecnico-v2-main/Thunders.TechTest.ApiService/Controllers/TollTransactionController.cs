@@ -60,7 +60,6 @@ public class TollTransactionController : ControllerBase
             return BadRequest(validationResult.Errors);
       
         var message = request.Adapt<CreateTollTransactionMessage>();
-        message.Id = Guid.NewGuid();
         await _messageSender.SendLocal(message);
 
         return Accepted("Toll transaction send to bus.");

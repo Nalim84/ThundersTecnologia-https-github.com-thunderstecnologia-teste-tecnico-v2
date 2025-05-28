@@ -42,9 +42,7 @@ public class TotalPerHourPerCityReportRepository : ITotalPerHourPerCityReportRep
 
     public async Task<ICollection<TotalPerHourPerCityReport>> GetTotalPerHourPerCityReport(Guid reportId, string cityName, CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var result = await _context.TollTransactions
+         var result = await _context.TollTransactions
        .Include(x => x.Toll)
        .Where(x => x.Toll.City == cityName)
        .GroupBy(x => x.CreatedAt.Hour)
@@ -60,13 +58,5 @@ public class TotalPerHourPerCityReportRepository : ITotalPerHourPerCityReportRep
        .ToListAsync();
 
             return result;
-        }
-        catch (Exception ex)
-        {
-            var messageaaa = ex.Message;
-            //_logger.LogError(ex, "Erro ao salvar alterações no banco de dados.");
-            throw;
-        }
-
     }
 }

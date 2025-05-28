@@ -30,26 +30,28 @@ public class CreateTollTransactionHandler : IHandleMessages<CreateTollTransactio
 
         try
         {
+            _logger.LogInformation($"CreateTollTransactionHandler - processing {message.TollId}");
 
-            _logger.LogInformation($"CreateTollTransactionHandler - processando {message.TollId}");
             var validator = new CreateTollTransactionMessageValidator();
             var validationResult = validator.Validate(message);
 
             if (!validationResult.IsValid)
             {
                 var errors = string.Join(" | ", validationResult.Errors.Select(e => e.ErrorMessage));
-                _logger.LogWarning("Validação falhou para {TollId}: {Errors}", message.TollId, errors);
-                return; 
+                _logger.LogWarning("Validation failed for {TollId}: {Errors}", message.TollId, errors);
+                throw new ValidationException(errors);
             }
 
             var command = message.Adapt<CreateTollTransactionCommand>();
             await _mediator.Send(command, cts.Token);
-
+        }
+        catch (InvalidOperationException opex)
+        {
+            _logger.LogWarning(opex, $"CreateTollTransactionHandler - Business rule violation {message.Id}");
         }
         catch (Exception ex)
         {
-
-            _logger.LogError(ex, "❌ Erro ao processar mensagem {TollId}", message.TollId);
+            _logger.LogError(ex, $"CreateTollTransactionHandler -  Unhandled error {message.Id}");
             throw;
         }
     }

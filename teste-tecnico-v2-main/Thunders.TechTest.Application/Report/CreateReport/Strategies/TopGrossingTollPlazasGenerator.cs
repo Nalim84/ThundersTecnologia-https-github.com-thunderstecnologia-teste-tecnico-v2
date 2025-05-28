@@ -16,13 +16,18 @@ public class TopGrossingTollPlazasGenerator : IReportGenerator
 
     ReportType IReportGenerator.ReportType => ReportType.TopGrossingTollPlazas;
 
-    public async Task HandleAsync(CreateReportCommand report, CancellationToken cancellationToken)
+    public async Task<CreateReportResult> HandleAsync(CreateReportCommand report, CancellationToken cancellationToken)
     {
+        var result = new CreateReportResult();
+
         if (int.TryParse(report.Parameters["MaxToll"], out var maxToll))
         {
             var reportDataSource = await _repository.GetTopGrossingTollPlazasReport(report.Id, maxToll, cancellationToken);
             var reportEntity = report.Adapt<DomainEntities.Report>();
             var response = await _repository.CreateReportTransactionAsync(reportEntity, reportDataSource ,cancellationToken);
+            result.Id = report.Id;
         }
+
+        return result;
     }
 }

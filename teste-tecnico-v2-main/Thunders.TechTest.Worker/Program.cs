@@ -7,7 +7,6 @@ using Thunders.TechTest.OutOfBox.Contexts;
 using Thunders.TechTest.OutOfBox.Database;
 using Thunders.TechTest.Worker;
 using Thunders.TechTest.Worker.Handlers.CreateTollTransaction;
-
 using System.Text.Json;
 using Thunders.TechTest.Worker.Handlers.CreateReport;
 using Mapster;
@@ -29,9 +28,9 @@ builder.Services.AddRebus(configure =>
         .Routing(r => r.TypeBased().MapAssemblyOf<CreateTollTransactionMessage>("Thunders.TechTest"))
         .Options(o =>
         {
-            o.SetMaxParallelism(5); // número de mensagens processadas ao mesmo tempo
-            o.SetNumberOfWorkers(2); // número de threads de consumo
-           
+            o.SetWorkerShutdownTimeout(new TimeSpan(0, 0, 10));
+            o.SetMaxParallelism(5); 
+            o.SetNumberOfWorkers(2); 
         })
 );
 

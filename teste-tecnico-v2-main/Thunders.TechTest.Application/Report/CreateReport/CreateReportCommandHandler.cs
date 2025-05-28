@@ -15,23 +15,14 @@ public class CreateReportCommandHandler : IRequestHandler<CreateReportCommand, C
 
     public async Task<CreateReportResult> Handle(CreateReportCommand request, CancellationToken cancellationToken)
     {
-        try
-        {
-            var validator = new CreateReportCommandValidator();
-                var validationResult = validator.Validate(request);
+        var validator = new CreateReportCommandValidator();
+        var validationResult = validator.Validate(request);
 
-            if (!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
 
-            var generator = _reportGeneratorFactory.GetGenerator((Domain.Types.ReportType)request.ReportType);
-            await generator.HandleAsync(request, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            var aaaa = ex.Message;
-            throw;
-        }
-
-       return null;
+        var generator = _reportGeneratorFactory.GetGenerator((Domain.Types.ReportType)request.ReportType);
+        var result = await generator.HandleAsync(request, cancellationToken);
+        return result;
     }
 }

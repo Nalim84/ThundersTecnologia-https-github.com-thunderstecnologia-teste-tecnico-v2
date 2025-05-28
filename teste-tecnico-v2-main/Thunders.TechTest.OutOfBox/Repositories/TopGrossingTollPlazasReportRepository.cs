@@ -40,6 +40,7 @@ public class TopGrossingTollPlazasReportRepository : ITopGrossingTollPlazasRepor
 
     public async Task<ICollection<TopGrossingTollPlazasReport>> GetTopGrossingTollPlazasReport(Guid reportId, int maxToll, CancellationToken cancellationToken = default)
     {
+
         var result = await _context.TollTransactions
     .Select(x => new
     {
@@ -58,7 +59,7 @@ public class TopGrossingTollPlazasReportRepository : ITopGrossingTollPlazasRepor
     })
     .Select(g => new TopGrossingTollPlazasReport()
     {
-        Id=Guid.NewGuid(),
+        Id = Guid.NewGuid(),
         ReportId = reportId,
         Year = g.Key.Year,
         Month = g.Key.Month,

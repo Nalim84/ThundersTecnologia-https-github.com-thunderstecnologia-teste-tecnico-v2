@@ -1,11 +1,10 @@
-﻿using Mapster;
+﻿using FluentValidation;
+using Mapster;
 using MediatR;
 using Rebus.Bus;
 using Rebus.Handlers;
 using Thunders.TechTest.Abstractions.Messages;
 using Thunders.TechTest.Application.Report.CreateReport;
-using Thunders.TechTest.Application.Toll.CreateToll;
-using Thunders.TechTest.Application.TollTransaction.TollTransaction;
 using Thunders.TechTest.Worker.Actions.Report.CreateReport;
 
 namespace Thunders.TechTest.Worker.Handlers.CreateReport;
@@ -28,27 +27,31 @@ public class CreateReportHandler : IHandleMessages<CreateReportMessage>
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
         try
         {
-            _logger.LogInformation($"CreateReportMessage - processando {message}");
+            _logger.LogInformation($"CreateReportMessage  - Processing message {message.Id}");
+
             var validator = new CreateReportMessageValidator();
             var validationResult = validator.Validate(message);
 
             if (!validationResult.IsValid)
             {
                 var errors = string.Join(" | ", validationResult.Errors.Select(e => e.ErrorMessage));
-                _logger.LogWarning("Validação falhou para {TollId}: {Errors}", message, errors);
-                return;
+                _logger.LogWarning("CreateReportMessage - Validation failed: {Errors}", errors);
+                throw new ValidationException(errors); 
             }
 
             var command = message.Adapt<CreateReportCommand>();
             await _mediator.Send(command, cts.Token);
 
         }
+        catch (InvalidOperationException opex)
+        {
+            _logger.LogWarning(opex, $"CreateReportMessage - Business rule violation {message.Id}");
+        }
         catch (Exception ex)
         {
-
-            _logger.LogError(ex, $"Erro ao processar mensagem {message}");
+            _logger.LogError(ex, $"CreateReportMessage -  Unhandled error {message.Id}");
             throw;
         }
-
     }
+
 }

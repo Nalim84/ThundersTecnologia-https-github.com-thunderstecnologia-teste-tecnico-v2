@@ -67,6 +67,7 @@ public class ReportController : ControllerBase
             return BadRequest(validationResult.Errors);
 
         var message = request.Adapt<CreateReportMessage>();
+
         await _messageSender.SendLocal(message);
 
         return Accepted("Create report send to bus.");

@@ -1,18 +1,8 @@
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Rebus.Bus;
 using Thunders.TechTest.ApiService;
-using Thunders.TechTest.ApiService.Controllers;
-using Thunders.TechTest.Application.TollTransaction.TollTransaction;
-using Thunders.TechTest.Domain.Contracts;
 using Thunders.TechTest.IoC;
 using Thunders.TechTest.OutOfBox.Contexts;
 using Thunders.TechTest.OutOfBox.Database;
 using Thunders.TechTest.OutOfBox.Queues;
-using Thunders.TechTest.OutOfBox.Repositories;
-using Thunders.TechTest.ServiceDefaults.IoC.ModuleInitializers;
-using Microsoft.AspNetCore.Builder;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);

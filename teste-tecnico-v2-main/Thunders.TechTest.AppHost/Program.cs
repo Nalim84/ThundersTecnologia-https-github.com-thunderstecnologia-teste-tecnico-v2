@@ -1,14 +1,8 @@
-using Aspire.Hosting;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Sockets;
-using System.Reflection.PortableExecutable;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
 builder.Services.AddGrpc();
-
-var cache = builder.AddRedis("cache");
 
 var rabbitMqPassword = builder.AddParameter("RabbitMqPassword", true);
 var rabbitMq = builder.AddRabbitMQ("RabbitMq", password: rabbitMqPassword)

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Thunders.TechTest.AppHost\Thunders.TechTest.AppHost.csproj" />
+    <ProjectReference Include="..\Thunders.TechTest.Application\Thunders.TechTest.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

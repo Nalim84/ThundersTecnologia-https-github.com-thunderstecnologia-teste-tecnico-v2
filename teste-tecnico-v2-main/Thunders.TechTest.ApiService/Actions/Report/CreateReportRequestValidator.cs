@@ -40,7 +40,6 @@ public class CreateReportRequestValidator : AbstractValidator<CreateReportReques
                 .WithMessage("MaxToll is required and must be a positive integer.");
         });
 
-
         //Quantos tipos de veículos passaram em uma determinada praça
         When(x => x.ReportType == Domain.Types.ReportType.VehicleTypesPerTollPlaza, () =>
         {

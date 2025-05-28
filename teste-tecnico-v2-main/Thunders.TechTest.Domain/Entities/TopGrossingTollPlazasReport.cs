@@ -1,6 +1,5 @@
 ﻿
 using Thunders.TechTest.Domain.Common;
-using Thunders.TechTest.Domain.Types;
 
 namespace Thunders.TechTest.Domain.Entities;
 

@@ -52,20 +52,27 @@ public class TollController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateToll([FromBody] CreateTollRequest request, CancellationToken cancellationToken)
     {
-        var validator = new CreateTollRequestValidator();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
-
-        var command = request.Adapt<CreateTollCommand>();
-        var response = await _mediator.Send(command, cancellationToken);
-
-        return Created(string.Empty, new ApiResponseWithData<CreateTollResponse>
+        try
         {
-            Success = true,
-            Message = "Toll Transaction created successfully",
-            Data = response.Adapt<CreateTollResponse>()
-        });
+            var validator = new CreateTollRequestValidator();
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            var command = request.Adapt<CreateTollCommand>();
+            var response = await _mediator.Send(command, cancellationToken);
+
+            return Created(string.Empty, new ApiResponseWithData<CreateTollResponse>
+            {
+                Success = true,
+                Message = "Toll Transaction created successfully",
+                Data = response.Adapt<CreateTollResponse>()
+            });
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 }

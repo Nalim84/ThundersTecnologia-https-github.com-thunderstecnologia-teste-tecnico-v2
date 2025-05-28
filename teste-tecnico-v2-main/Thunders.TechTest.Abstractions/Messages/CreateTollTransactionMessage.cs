@@ -1,6 +1,6 @@
 ﻿namespace Thunders.TechTest.Abstractions.Messages;
 
-public class CreateTollTransactionMessage
+public class CreateTollTransactionMessage 
 {
     public Guid Id { get; set; }
     public Guid TollId { get; set; }
@@ -16,7 +16,6 @@ public class CreateTollTransactionMessage
         AmountPaid = amountPaid;
     }
 }
-
 
 public enum VehicleType
 {
