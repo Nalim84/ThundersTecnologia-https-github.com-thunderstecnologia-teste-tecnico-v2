@@ -4,7 +4,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-  </PropertyGroup>
+			<GenerateDocumentationFile>true</GenerateDocumentationFile>
+			<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
 
   <ItemGroup>
 			<PackageReference Include="FluentValidation" Version="12.0.0" />
@@ -17,6 +19,7 @@
 			</PackageReference>
 			<PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
 			<PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+			<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="8.1.2" />
 			<ProjectReference Include="..\Thunders.TechTest.Abstractions\Thunders.TechTest.Abstractions.csproj" />
 			<ProjectReference Include="..\Thunders.TechTest.ServiceDefaults.IoC\Thunders.TechTest.IoC.csproj" />
     <ProjectReference Include="..\Thunders.TechTest.ServiceDefaults\Thunders.TechTest.ServiceDefaults.csproj" />

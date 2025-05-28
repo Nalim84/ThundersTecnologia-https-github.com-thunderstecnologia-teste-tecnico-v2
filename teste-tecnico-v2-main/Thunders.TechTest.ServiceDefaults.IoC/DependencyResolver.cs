@@ -9,7 +9,6 @@ public static class DependencyResolver
     public static void RegisterWebApplicationDependencies(this WebApplicationBuilder builder)
     {
         new InfrastructureModuleInitializer().Initialize(builder);
-        new WebApiModuleInitializer().Initialize(builder);
     }
     public static void RegisterHostApplicationDependencies(this HostApplicationBuilder builder)
     {

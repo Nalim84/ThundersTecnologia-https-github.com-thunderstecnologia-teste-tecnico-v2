@@ -1,4 +1,3 @@
-using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Routing.TypeBased;
 using Rebus.Serialization.Json;
@@ -9,8 +8,11 @@ using Thunders.TechTest.OutOfBox.Database;
 using Thunders.TechTest.Worker;
 using Thunders.TechTest.Worker.Handlers.CreateTollTransaction;
 
-using Rebus.Retry.Simple;
+using System.Text.Json;
 using Thunders.TechTest.Worker.Handlers.CreateReport;
+using Mapster;
+using Thunders.TechTest.Application.Report.CreateReport;
+using Thunders.TechTest.Domain.Entities;
 
 
 var builder = Host.CreateApplicationBuilder(args);
@@ -33,11 +35,19 @@ builder.Services.AddRebus(configure =>
         })
 );
 
+TypeAdapterConfig<CreateReportCommand, Report>
+    .NewConfig()
+    .AfterMapping((src, dest) =>
+    {
+        dest.Parameters = src.Parameters == null ? null : JsonSerializer.Serialize(src.Parameters);
+    });
+
 
 DependencyResolver.RegisterHostApplicationDependencies(builder);
 
 builder.Services.AddSqlServerDbContext<DefaultContext>(builder.Configuration);
 builder.Services.AddHostedService<Worker>();
+
 
 var host = builder.Build();
 await host.RunAsync();

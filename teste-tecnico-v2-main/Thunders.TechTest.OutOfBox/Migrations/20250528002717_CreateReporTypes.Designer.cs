@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Thunders.TechTest.OutOfBox.Contexts;
 
@@ -11,9 +12,11 @@ using Thunders.TechTest.OutOfBox.Contexts;
 namespace Thunders.TechTest.OutOfBox.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    partial class DefaultContextModelSnapshot : ModelSnapshot
+    [Migration("20250528002717_CreateReporTypes")]
+    partial class CreateReporTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,9 +117,6 @@ namespace Thunders.TechTest.OutOfBox.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("Month")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("ReportId")
                         .HasColumnType("uniqueidentifier");
 
@@ -133,9 +133,6 @@ namespace Thunders.TechTest.OutOfBox.Migrations
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

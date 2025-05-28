@@ -13,13 +13,21 @@ using Thunders.TechTest.OutOfBox.Queues;
 using Thunders.TechTest.OutOfBox.Repositories;
 using Thunders.TechTest.ServiceDefaults.IoC.ModuleInitializers;
 using Microsoft.AspNetCore.Builder;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+
+    c.EnableAnnotations();
+});
 builder.Services.AddHttpClient();
 
 

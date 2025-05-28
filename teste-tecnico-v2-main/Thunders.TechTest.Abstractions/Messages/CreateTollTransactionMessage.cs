@@ -9,14 +9,12 @@ public class CreateTollTransactionMessage
 
     public CreateTollTransactionMessage() { }
 
-    public CreateTollTransactionMessage(Guid tollId, VehicleType vehicleType, decimal amountPaid)
+    public CreateTollTransactionMessage(Guid Id , Guid tollId, VehicleType vehicleType, decimal amountPaid)
     {
         TollId = tollId;
         VehicleType = vehicleType;
         AmountPaid = amountPaid;
     }
-
-
 }
 
 

@@ -2,18 +2,26 @@
 
 public class CreateReportMessage
 {
-    public Guid RequestId { get; set; } = Guid.NewGuid();
-
+    public Guid Id { get; set; }
     public ReportType ReportType { get; set; }
-   
     public Dictionary<string, string>? Parameters { get; set; }
+    public DateTimeOffset RequestedAt { get; set; }
 
-    public DateTimeOffset RequestedAt { get; set; } = DateTime.UtcNow;
+    public CreateReportMessage()
+    {
+    }
+
+    public CreateReportMessage(Guid Id, ReportType reportType, Dictionary<string, string>? parameters = null)
+    {
+        ReportType = reportType;
+        Parameters = parameters;
+        RequestedAt = DateTimeOffset.UtcNow;
+    }
 }
 
 public enum ReportType
 {
-    TotalPorHoraPorCidade = 1,
-    PracasMaisFaturaram = 2,
-    VeiculosPorPraca = 3
+    TotalPerHourPerCity = 1,
+    TopGrossingTollPlazas = 2,
+    VehicleTypesPerTollPlaza = 3
 }

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Thunders.TechTest.Abstractions.Messages;
 
 namespace Thunders.TechTest.Application.TollTransaction.TollTransaction;
 
@@ -8,12 +7,12 @@ public class CreateTollTransactionCommandValidator : AbstractValidator<CreateTol
     public CreateTollTransactionCommandValidator()
     {
         RuleFor(x => x.TollId)
-            .NotEmpty().WithMessage("O identificador do pedágio (TollId) é obrigatório.");
+      .NotEmpty().WithMessage("The toll identifier (TollId) is required.");
 
         RuleFor(x => x.VehicleType)
-            .IsInEnum().WithMessage("Tipo de veículo inválido.");
+            .IsInEnum().WithMessage("Invalid vehicle type.");
 
         RuleFor(x => x.AmountPaid)
-            .GreaterThan(0).WithMessage("O valor pago deve ser maior que zero.");
+            .GreaterThan(0).WithMessage("The amount paid must be greater than zero.");
     }
 }

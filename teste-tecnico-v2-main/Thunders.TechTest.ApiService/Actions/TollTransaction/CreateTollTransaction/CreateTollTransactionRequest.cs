@@ -2,5 +2,5 @@
 
 namespace Thunders.TechTest.ApiService.Actions.TollTransaction.CreateTollTransaction
 {
-    public record CreateTollTransactionRequest(Guid TollId, VehicleType VehicleType, decimal AmountPaid);
+    public record CreateTollTransactionRequest(Guid Id, Guid TollId, VehicleType VehicleType, decimal AmountPaid);
 }

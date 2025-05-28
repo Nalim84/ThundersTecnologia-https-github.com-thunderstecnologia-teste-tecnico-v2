@@ -28,7 +28,6 @@ namespace Thunders.TechTest.Application.Toll.CreateToll
                 throw new InvalidOperationException($"Toll with id {request.Id} already exists");
 
             var toll = request.Adapt<DomainEntities.Toll>();
-            toll.CreatedAt = DateTimeOffset.UtcNow;
             var createdTollTransaction = await _tollRepository.CreateAsync(toll, cancellationToken);
             var result = createdTollTransaction.Adapt<CreateTollResult>();
 

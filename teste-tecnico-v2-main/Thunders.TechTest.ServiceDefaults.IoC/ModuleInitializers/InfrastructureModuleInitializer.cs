@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Thunders.TechTest.Application.Report.CreateReport.Strategies;
 using Thunders.TechTest.Application.Toll.CreateToll;
 using Thunders.TechTest.Application.TollTransaction.TollTransaction;
 using Thunders.TechTest.Domain.Contracts;
@@ -18,6 +19,17 @@ public class InfrastructureModuleInitializer : IModuleInitializer
         builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
         builder.Services.AddScoped<ITollTransactionRepository, TollTransactionRepository>();
         builder.Services.AddScoped<ITollRepository, TollRepository>();
+        builder.Services.AddScoped<IReportRespository, ReportRepository>();
+
+        builder.Services.AddScoped<ITotalPerHourPerCityReportRepository, TotalPerHourPerCityReportRepository>();
+        builder.Services.AddScoped<IVehicleTypesPerTollPlazaReportRepository, VehicleTypesPerTollPlazaReportRepository>();
+        builder.Services.AddScoped<ITopGrossingTollPlazasReportRepository, TopGrossingTollPlazasReportRepository>();
+            
+        builder.Services.AddScoped<IReportGenerator, TotalPerHourPerCityGenerator>();
+        builder.Services.AddScoped<IReportGenerator, TopGrossingTollPlazasGenerator>();
+        builder.Services.AddScoped<IReportGenerator, VehicleTypesPerTollPlazaGenerator>();
+
+        builder.Services.AddScoped<IReportGeneratorFactory, ReportGeneratorFactory>();
     }
 
     public void Initialize(HostApplicationBuilder builder)
@@ -27,5 +39,17 @@ public class InfrastructureModuleInitializer : IModuleInitializer
         builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
         builder.Services.AddScoped<ITollTransactionRepository, TollTransactionRepository>();
         builder.Services.AddScoped<ITollRepository, TollRepository>();
+        builder.Services.AddScoped<IReportRespository, ReportRepository>();
+
+        builder.Services.AddScoped<ITotalPerHourPerCityReportRepository, TotalPerHourPerCityReportRepository>();
+        builder.Services.AddScoped<IVehicleTypesPerTollPlazaReportRepository, VehicleTypesPerTollPlazaReportRepository>();
+        builder.Services.AddScoped<ITopGrossingTollPlazasReportRepository, TopGrossingTollPlazasReportRepository>();
+
+        builder.Services.AddScoped<IReportGenerator, TotalPerHourPerCityGenerator>();
+        builder.Services.AddScoped<IReportGenerator, TopGrossingTollPlazasGenerator>();
+        builder.Services.AddScoped<IReportGenerator, VehicleTypesPerTollPlazaGenerator>();
+
+        builder.Services.AddScoped<IReportGeneratorFactory, ReportGeneratorFactory>();
+
     }
 }

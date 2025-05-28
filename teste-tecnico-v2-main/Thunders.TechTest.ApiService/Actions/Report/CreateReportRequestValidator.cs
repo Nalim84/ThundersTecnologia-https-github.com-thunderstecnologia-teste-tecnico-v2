@@ -1,18 +1,21 @@
 ﻿using FluentValidation;
-using Thunders.TechTest.Abstractions.Messages;
+using Thunders.TechTest.ApiService.Actions.Report.CreateReport;
 
-namespace Thunders.TechTest.Worker.Actions.Report.CreateReport;
+namespace Thunders.TechTest.ApiService.Actions.Report.CreateToll;
 
-public class CreateReportMessageValidator : AbstractValidator<CreateReportMessage>
+public class CreateReportRequestValidator : AbstractValidator<CreateReportRequest>
 {
-    public CreateReportMessageValidator()
+    public CreateReportRequestValidator()
     {
+        RuleFor(x => x.Id)
+   .NotEmpty().WithMessage("The report identifier is required.");
+
         RuleFor(x => x.ReportType)
             .IsInEnum()
             .WithMessage("The report type is invalid.");
 
         //Valor total por hora por cidade
-        When(x => x.ReportType == ReportType.TotalPerHourPerCity, () =>
+        When(x => x.ReportType == Domain.Types.ReportType.TotalPerHourPerCity, () =>
         {
             RuleFor(x => x.Parameters)
                 .NotNull().WithMessage("Parameters must not be null.")
@@ -22,7 +25,7 @@ public class CreateReportMessageValidator : AbstractValidator<CreateReportMessag
         });
 
         //As praças que mais faturaram por mês (a quantidade a ser processada deve ser configurável)
-        When(x => x.ReportType == ReportType.TopGrossingTollPlazas, () =>
+        When(x => x.ReportType == Domain.Types.ReportType.TopGrossingTollPlazas, () =>
         {
             RuleFor(x => x.Parameters)
                 .NotNull()
@@ -39,7 +42,7 @@ public class CreateReportMessageValidator : AbstractValidator<CreateReportMessag
 
 
         //Quantos tipos de veículos passaram em uma determinada praça
-        When(x => x.ReportType == ReportType.VehicleTypesPerTollPlaza, () =>
+        When(x => x.ReportType == Domain.Types.ReportType.VehicleTypesPerTollPlaza, () =>
         {
             RuleFor(x => x.Parameters)
            .NotNull()

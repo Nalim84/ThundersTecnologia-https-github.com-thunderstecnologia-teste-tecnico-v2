@@ -1,31 +1,37 @@
-﻿using MediatR;
-using Thunders.TechTest.Application.Toll.CreateToll;
-using Thunders.TechTest.Domain.Contracts;
+﻿using FluentValidation;
+using MediatR;
+using Thunders.TechTest.Application.Report.CreateReport.Strategies;
 
 namespace Thunders.TechTest.Application.Report.CreateReport;
 
 public class CreateReportCommandHandler : IRequestHandler<CreateReportCommand, CreateReportResult>
 {
-    public readonly ITollTransactionRepository _tollTransactionRepository;
-    public readonly ITollRepository _tollRepository;
+    private readonly IReportGeneratorFactory _reportGeneratorFactory;
 
-    public CreateReportCommandHandler(ITollTransactionRepository tollTransactionRepository, ITollRepository tollRepository)
+    public CreateReportCommandHandler(IReportGeneratorFactory reportGeneratorFactory)
     {
-        _tollTransactionRepository = tollTransactionRepository;
-        _tollRepository = tollRepository;
+        _reportGeneratorFactory = reportGeneratorFactory;
     }
 
     public async Task<CreateReportResult> Handle(CreateReportCommand request, CancellationToken cancellationToken)
     {
-        var validator = new CreateReportCommandValidator();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        try
+        {
+            var validator = new CreateReportCommandValidator();
+                var validationResult = validator.Validate(request);
 
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
 
-        if (!validationResult.IsValid)
-            throw new FluentValidation.ValidationException(validationResult.Errors);
+            var generator = _reportGeneratorFactory.GetGenerator((Domain.Types.ReportType)request.ReportType);
+            await generator.HandleAsync(request, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            var aaaa = ex.Message;
+            throw;
+        }
 
-
-
-        return null;
+       return null;
     }
 }
