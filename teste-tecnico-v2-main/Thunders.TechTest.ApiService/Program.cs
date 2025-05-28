@@ -4,6 +4,11 @@ using Thunders.TechTest.OutOfBox.Contexts;
 using Thunders.TechTest.OutOfBox.Database;
 using Thunders.TechTest.OutOfBox.Queues;
 using System.Reflection;
+using Thunders.TechTest.ApiService.Actions.Report.CreateToll;
+using FluentValidation;
+using Thunders.TechTest.ApiService.Actions.Report.CreateReport;
+using Thunders.TechTest.ApiService.Actions.Toll.CreateToll;
+using Thunders.TechTest.ApiService.Actions.TollTransaction.CreateTollTransaction;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +26,9 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddHttpClient();
 
 
-builder.Services.AddScoped<IMessageSender, RebusMessageSender>();
+builder.Services.AddScoped<IValidator<CreateReportRequest>, CreateReportRequestValidator>(); 
+builder.Services.AddScoped<IValidator<CreateTollRequest>, CreateTollRequestValidator>(); 
+builder.Services.AddScoped<IValidator<CreateTollTransactionRequest>, CreateTollTransactionRequestValidator>(); 
 
 var features = Features.BindFromConfiguration(builder.Configuration);
 

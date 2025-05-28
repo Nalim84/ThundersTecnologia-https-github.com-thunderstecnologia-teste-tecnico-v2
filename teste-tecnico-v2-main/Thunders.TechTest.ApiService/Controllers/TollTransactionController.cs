@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using FluentValidation;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Thunders.TechTest.Abstractions.Messages;
@@ -13,10 +14,12 @@ namespace Thunders.TechTest.ApiService.Controllers;
 public class TollTransactionController : ControllerBase
 {
     private readonly IMessageSender _messageSender;
+    private readonly IValidator<CreateTollTransactionRequest> _validator;
 
-    public TollTransactionController(IMessageSender messageSender)
+    public TollTransactionController(IMessageSender messageSender, IValidator<CreateTollTransactionRequest> validator)
     {
         _messageSender = messageSender;
+        _validator = validator;
     }
 
     /// <summary>
@@ -53,8 +56,7 @@ public class TollTransactionController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateTollTransaction([FromBody] CreateTollTransactionRequest request, CancellationToken cancellationToken)
     {
-        var validator = new CreateTollTransactionRequestValidator();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);

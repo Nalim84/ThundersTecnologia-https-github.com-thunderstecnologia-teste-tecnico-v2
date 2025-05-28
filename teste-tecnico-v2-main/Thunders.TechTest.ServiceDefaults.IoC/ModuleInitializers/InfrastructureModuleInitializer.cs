@@ -6,6 +6,7 @@ using Thunders.TechTest.Application.Report.CreateReport.Strategies;
 using Thunders.TechTest.Application.Toll.CreateToll;
 using Thunders.TechTest.Application.TollTransaction.TollTransaction;
 using Thunders.TechTest.Domain.Contracts;
+using Thunders.TechTest.OutOfBox.Queues;
 using Thunders.TechTest.OutOfBox.Repositories;
 
 namespace Thunders.TechTest.ServiceDefaults.IoC.ModuleInitializers;
@@ -30,6 +31,8 @@ public class InfrastructureModuleInitializer : IModuleInitializer
         builder.Services.AddScoped<IReportGenerator, VehicleTypesPerTollPlazaGenerator>();
 
         builder.Services.AddScoped<IReportGeneratorFactory, ReportGeneratorFactory>();
+        builder.Services.AddScoped<IMessageSender, RebusMessageSender>();
+
     }
 
     public void Initialize(HostApplicationBuilder builder)
@@ -50,6 +53,8 @@ public class InfrastructureModuleInitializer : IModuleInitializer
         builder.Services.AddScoped<IReportGenerator, VehicleTypesPerTollPlazaGenerator>();
 
         builder.Services.AddScoped<IReportGeneratorFactory, ReportGeneratorFactory>();
+        builder.Services.AddScoped<IMessageSender, RebusMessageSender>();
+
 
     }
 }

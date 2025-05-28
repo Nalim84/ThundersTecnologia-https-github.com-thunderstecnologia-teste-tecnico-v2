@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using FluentValidation;
+using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -15,11 +16,13 @@ public class TollController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IMessageSender _messageSender;
+    private readonly IValidator<CreateTollRequest> _validator;
 
-    public TollController(IMediator mediator, IMessageSender messageSender)
+    public TollController(IMediator mediator, IMessageSender messageSender, IValidator<CreateTollRequest> validator)
     {
         _mediator = mediator;
         _messageSender = messageSender;
+        _validator = validator;
     }
 
     /// <summary>
@@ -54,8 +57,7 @@ public class TollController : ControllerBase
     {
         try
         {
-            var validator = new CreateTollRequestValidator();
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);

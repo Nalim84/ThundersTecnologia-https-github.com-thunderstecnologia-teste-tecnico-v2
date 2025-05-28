@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using FluentValidation;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Thunders.TechTest.Abstractions.Messages;
@@ -14,10 +15,12 @@ namespace Thunders.TechTest.ApiService.Controllers;
 public class ReportController : ControllerBase
 {
     private readonly IMessageSender _messageSender;
+    private readonly IValidator<CreateReportRequest> _validator;
 
-    public ReportController(IMessageSender messageSender)
+    public ReportController(IMessageSender messageSender, IValidator<CreateReportRequest> validator)
     {
         _messageSender = messageSender;
+        _validator = validator;
     }
 
     /// <summary>
@@ -60,8 +63,7 @@ public class ReportController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateReport([FromBody] CreateReportRequest request, CancellationToken cancellationToken)
     {
-        var validator = new CreateReportRequestValidator();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
